@@ -4,27 +4,24 @@ const bodyParser = require("body-parser");
 const debug = require('debug')('catdraw-server');
 const debugSerialPort = require('debug')('catdraw-server:serialPort');
 
+const Connection = require('./Connection');
 const { translatePosition } = require('./util');
+const { ACTIONS } = require('./const');
 
 const app = express()
-const serialport = new SerialPort("/dev/ttyACM0", {
-  baudRate: 9600,
-});
 
 app.use(bodyParser.json());
 
 
 // Serial Comunication
-serialport.on('open', () => {
-  debugSerialPort('Serial Port Opend');
+const serialport = new SerialPort("/dev/ttyACM0", {
+  baudRate: 9600,
+  autoOpen: false,
 });
 
-serialport.on('error', (err) => {
-  console.error('Error: ', err.message);
-});
-
-serialport.on('readable', () => {
-  debugSerialPort('Data:', serialport.read());
+const connection = new Connection(serialport, {
+  onOpen: () => debugSerialPort('Serial Port Opend'),
+  onError: () => debugSerialPort('Error: ', err.message),
 });
 
 
@@ -34,13 +31,13 @@ app.get('/', () => {
 })
 
 app.get('/:x/:y', (req, res) => {
-  if (serialport.isOpen) {
-    serialport.write([0, req.params.x, req.params.y, 1], () => debugSerialPort('Mensaje enviado'))
+  if (connection.isOpen) {
+    connection.write([0, req.params.x, req.params.y, 1]);
 
-    return res.send(`LED: ${req.params.x}, ${req.params.y}`)
+    return res.send(`LED: ${req.params.x}, ${req.params.y}`);
   }
 
-  return res.send(`Serial Port connection is not open.`)
+  return res.send(`Serial Port connection is not open.`);
 })
 
 app.post('/figure', (req, res) => {
@@ -48,7 +45,9 @@ app.post('/figure', (req, res) => {
 
   const realPositions = figure.map(position => translatePosition(...position))
 
-  console.log(realPositions);
+  for (position of realPositions) {
+    connection.write([ACTIONS.draw, ...position, 1]);
+  }
 })
 
 
