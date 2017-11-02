@@ -5,8 +5,7 @@ const debug = require('debug')('catdraw-server');
 const debugSerialPort = require('debug')('catdraw-server:serialPort');
 
 const Connection = require('./Connection');
-const { translatePosition } = require('./util');
-const { ACTIONS } = require('./const');
+const Draw = require('./Draw');
 
 const app = express()
 
@@ -23,6 +22,8 @@ const connection = new Connection(serialport, {
   onOpen: () => debugSerialPort('Serial Port Opend'),
   onError: () => debugSerialPort('Error: ', err.message),
 });
+
+const draw = new Draw(connection);
 
 
 // API
@@ -43,11 +44,7 @@ app.get('/:x/:y', (req, res) => {
 app.post('/figure', (req, res) => {
   const figure = req.body;
 
-  const realPositions = figure.map(position => translatePosition(...position))
-
-  for (position of realPositions) {
-    connection.write([ACTIONS.draw, ...position, 1]);
-  }
+  draw.addFigure(figure);
 })
 
 
