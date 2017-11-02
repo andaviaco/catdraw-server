@@ -1,0 +1,16 @@
+{
+  "name": "catdraw-server",
+  "version": "1.0.0",
+  "main": "app.js",
+  "repository": "git@github.com:andaviaco/catdraw-server.git",
+  "author": "Andrés Ávila <andaviaco@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "express": "^4.16.2",
+    "serialport": "^6.0.4"
+  },
+  "scripts": {
+    "start": "DEBUG=catdraw-server,catdraw-server:*,serialport:main node app.js"
+  }
+}
