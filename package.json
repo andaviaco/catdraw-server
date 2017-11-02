@@ -6,6 +6,7 @@
   "author": "Andrés Ávila <andaviaco@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "debug": "^3.1.0",
     "express": "^4.16.2",
     "serialport": "^6.0.4"
