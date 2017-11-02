@@ -1,3 +1,5 @@
+exports.FIGURE_DURATION = 5000;
+
 exports.COLOR_KEYS = {
   red: 'r',
   green: 'g',

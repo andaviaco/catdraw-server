@@ -1,5 +1,5 @@
 const { ACTIONS } = require('./const');
-const { COLOR_KEYS, COLOR_MAP } = require('./const');
+const { FIGURE_DURATION, COLOR_KEYS, COLOR_MAP } = require('./const');
 
 
 class Draw {
@@ -20,12 +20,14 @@ class Draw {
     }
 
     setTimeout(() => {
+      this.clearBoard();
+
       if (this.queue.length) {
         this.run();
       } else {
         this.isRunnig = false;
       }
-    }, 3000);
+    }, FIGURE_DURATION);
   }
 
   addFigure(figure) {
@@ -42,6 +44,10 @@ class Draw {
     const fixedCol = col * Object.keys(COLOR_MAP).length + COLOR_MAP[color];
 
     return [row, fixedCol];
+  }
+
+  clearBoard() {
+    this.connection.write([ACTIONS.reset]);
   }
 }
 

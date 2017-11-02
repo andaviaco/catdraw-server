@@ -45,6 +45,8 @@ app.post('/figure', (req, res) => {
   const figure = req.body;
 
   draw.addFigure(figure);
+
+  return res.status(201).send('Figure added!')
 })
 
 
