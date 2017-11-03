@@ -1,13 +1,8 @@
 exports.FIGURE_DURATION = 5000;
 
-exports.COLOR_KEYS = {
-  red: 'r',
-  green: 'g',
-};
-
 exports.COLOR_MAP = {
-  r: 0,
-  g: 1,
+  red: 0,
+  green: 1,
 };
 
 exports.ACTIONS = {

@@ -1,5 +1,5 @@
 const { ACTIONS } = require('./const');
-const { FIGURE_DURATION, COLOR_KEYS, COLOR_MAP } = require('./const');
+const { FIGURE_DURATION, COLOR_MAP } = require('./const');
 
 
 class Draw {
@@ -40,7 +40,7 @@ class Draw {
     }
   }
 
-  translatePosition(row, col, color=COLOR_KEYS.green) {
+  translatePosition(row, col, color='green') {
     const fixedCol = col * Object.keys(COLOR_MAP).length + COLOR_MAP[color];
 
     return [row, fixedCol];
