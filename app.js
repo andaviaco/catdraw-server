@@ -1,6 +1,7 @@
 const express = require('express');
 const SerialPort = require("serialport");
 const bodyParser = require("body-parser");
+const cors = require('cors');
 const debug = require('debug')('catdraw-server');
 const debugSerialPort = require('debug')('catdraw-server:serialPort');
 
@@ -10,6 +11,7 @@ const Draw = require('./Draw');
 const app = express()
 
 app.use(bodyParser.json());
+app.use(cors());
 
 
 // Serial Comunication
