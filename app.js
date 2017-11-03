@@ -61,10 +61,8 @@ app.post('/figure', (req, res) => {
 io.on('connection', (socket) => {
   debugIo('User connected');
 
-  // socket.emit
-  // socket.on('subscribeToFigureQueue', () => {
-  //
-  // })
+  draw.on('enqueueFigure', figure => socket.emit('queueChange', draw.ogQueue));
+  draw.on('popFigure', figure => (socket.emit('queueChange', draw.ogQueue));
 });
 
 
