@@ -25,6 +25,7 @@ class Draw {
 
     const figure = this.queue.shift();
 
+    this.eventEmitter.emit('popFigure', figure);
 
     for (const position of figure) {
       await this.connection.write([ACTIONS.draw, ...position, 1]);
@@ -46,7 +47,7 @@ class Draw {
 
     this.queue.push(realFigure);
 
-    this.eventEmitter.emit('newFigure', figure);
+    this.eventEmitter.emit('enqueueFigure', figure);
 
     if (!this.isRunnig) {
       this.run();
