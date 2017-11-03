@@ -2,13 +2,18 @@ const express = require('express');
 const SerialPort = require("serialport");
 const bodyParser = require("body-parser");
 const cors = require('cors');
+const socketIo = require("socket.io");
+const http = require('http');
 const debug = require('debug')('catdraw-server');
 const debugSerialPort = require('debug')('catdraw-server:serialPort');
+const debugIo = require('debug')('catdraw-server:IO');
 
 const Connection = require('./Connection');
 const Draw = require('./Draw');
 
-const app = express()
+const app = express();
+const ioServer = http.Server()
+const io = socketIo(ioServer);
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -52,6 +57,21 @@ app.post('/figure', (req, res) => {
 })
 
 
+// Socket IO
+io.on('connection', (socket) => {
+  debugIo('User connected');
+
+  // socket.emit
+  // socket.on('subscribeToFigureQueue', () => {
+  //
+  // })
+});
+
+
 app.listen(3000, () => {
   debug('listening on port 3000!')
 })
+
+ioServer.listen(3030, () => {
+  debugIo('listening on port 3030!')
+});
