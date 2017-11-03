@@ -1,7 +1,7 @@
 const events = require('events');
 
 const { ACTIONS } = require('./const');
-const { FIGURE_DURATION, COLOR_MAP } = require('./const');
+const { FIGURE_DURATION, COLOR_MAP, COLOR_KEY } = require('./const');
 
 
 class Draw {
@@ -12,6 +12,12 @@ class Draw {
     this.isRunnig = false;
 
     this.eventEmitter = new events.EventEmitter();
+  }
+
+  get ogQueue() {
+    return this.queue.map(figure => (
+      figure.map(position => this.revertePositionTranslation(...position))
+    ));
   }
 
   async run() {
@@ -51,6 +57,14 @@ class Draw {
     const fixedCol = col * Object.keys(COLOR_MAP).length + COLOR_MAP[color];
 
     return [row, fixedCol];
+  }
+
+  revertePositionTranslation(row, col) {
+    const len = Object.keys(COLOR_MAP).length;
+    const color_val = (col % len);
+    const originalCol = (col - color_val) / len;
+
+    return [row, originalCol, COLOR_KEY[color_val]];
   }
 
   clearBoard() {
