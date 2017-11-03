@@ -16,7 +16,7 @@ class Draw {
     const figure = this.queue.shift();
 
     for (const position of figure) {
-      this.connection.write([ACTIONS.draw, ...position, 1]);
+      await this.connection.write([ACTIONS.draw, ...position, 1]);
     }
 
     setTimeout(() => {

@@ -7,11 +7,15 @@ class Connection {
     this.serialPort.on('error', config.onError);
   }
 
-  write(data, cb) {
-    this.serialPort.write(data, (err) => {
-      console.log('Enviado');
-
-      cb && cb(err);
+  write(data) {
+    new Promise((resolve, reject) => {
+      this.serialPort.write(data, (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
     });
   }
 
