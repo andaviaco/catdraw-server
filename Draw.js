@@ -10,10 +10,11 @@ class Draw {
     this.isRunnig = false;
   }
 
-  run() {
+  async run() {
     this.isRunnig = true;
 
     const figure = this.queue.shift();
+
 
     for (const position of figure) {
       await this.connection.write([ACTIONS.draw, ...position, 1]);
@@ -47,7 +48,7 @@ class Draw {
   }
 
   clearBoard() {
-    this.connection.write([ACTIONS.reset]);
+    this.connection.write([ACTIONS.reset, 0, 0, 0]);
   }
 }
 
