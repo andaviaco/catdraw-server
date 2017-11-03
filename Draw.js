@@ -1,3 +1,5 @@
+const events = require('events');
+
 const { ACTIONS } = require('./const');
 const { FIGURE_DURATION, COLOR_MAP } = require('./const');
 
@@ -8,6 +10,8 @@ class Draw {
 
     this.queue = [];
     this.isRunnig = false;
+
+    this.eventEmitter = new events.EventEmitter();
   }
 
   async run() {
@@ -36,6 +40,8 @@ class Draw {
 
     this.queue.push(realFigure);
 
+    this.eventEmitter.emit('newFigure', figure);
+
     if (!this.isRunnig) {
       this.run();
     }
@@ -49,6 +55,10 @@ class Draw {
 
   clearBoard() {
     this.connection.write([ACTIONS.reset, 0, 0, 0]);
+  }
+
+  on(event, handler) {
+    this.eventEmitter.on(event, handler);
   }
 }
 
