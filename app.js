@@ -62,7 +62,7 @@ io.on('connection', (socket) => {
   debugIo('User connected');
 
   draw.on('enqueueFigure', figure => socket.emit('queueChange', draw.ogQueue));
-  draw.on('popFigure', figure => (socket.emit('queueChange', draw.ogQueue));
+  draw.on('popFigure', figure => socket.emit('queueChange', draw.ogQueue));
 });
 
 
